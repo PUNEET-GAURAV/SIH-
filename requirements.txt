@@ -1,0 +1,47 @@
+# DocShield AI — Python Dependencies
+
+# === Core Backend ===
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+pydantic-settings==2.7.1
+python-multipart==0.0.20
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+pyyaml==6.0.2
+
+# === Database ===
+sqlalchemy==2.0.36
+alembic==1.14.1
+# psycopg2-binary==2.9.10
+
+# === Computer Vision (Core — no large models) ===
+opencv-python-headless==4.10.0.84
+scikit-image==0.24.0
+numpy==1.26.4
+Pillow==11.1.0
+
+# === AI Models (install for real inference; system degrades gracefully without these) ===
+# PaddleOCR — OCR engine
+paddlepaddle==2.6.2
+paddleocr==2.9.1
+
+# InsightFace — face detection + ArcFace embeddings
+insightface==0.7.3
+onnxruntime==1.20.1
+
+# PyTorch — forensic CNN (EfficientNet-B0)
+# Install appropriate version for your platform:
+# CPU: torch==2.5.1 torchvision==0.20.1
+# GPU: see https://pytorch.org/get-started/locally/
+torch==2.5.1
+torchvision==0.20.1
+
+# === Testing ===
+pytest==8.3.4
+pytest-asyncio==0.25.0
+httpx==0.28.1
+
+# === Utilities ===
+aiofiles==24.1.0
+python-dotenv==1.0.1

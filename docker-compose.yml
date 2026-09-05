@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: docshield_postgres
+    environment:
+      POSTGRES_DB: docshield
+      POSTGRES_USER: docshield_user
+      POSTGRES_PASSWORD: docshield_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U docshield_user -d docshield"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.backend
+    container_name: docshield_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://docshield_user:docshield_password@postgres:5432/docshield
+      - MOCK_MODE=true
+      - APP_ENV=production
+      - SECRET_KEY=docshield-production-secret-key-change-in-prod
+      - JWT_SECRET_KEY=docshield-jwt-production-secret-key
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./uploads:/app/uploads
+      - ./models:/app/models
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: docshield_frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

@@ -1,0 +1,89 @@
+# DocShield AI — Default Configuration
+# All thresholds are PROTOTYPE DEFAULTS, not scientifically derived.
+# Tune from this single file.
+
+quality:
+  min_resolution: 640          # minimum dimension in pixels
+  max_blur_score: 100.0        # Laplacian variance threshold (lower = blurrier)
+  max_glare_ratio: 0.15        # fraction of overexposed pixels
+  min_corner_count: 4          # document corners detected
+  max_perspective_distortion: 0.3
+  min_document_area_ratio: 0.1 # document vs frame area
+
+classification:
+  min_confidence: 0.7          # below this -> UNKNOWN_DOCUMENT_MODE
+  known_templates:
+    - id: "passport_td3"
+      version: "v1"
+      description: "TD3 Machine Readable Passport"
+    - id: "id_card_td1"
+      version: "v1"
+      description: "TD1 Identity Card"
+
+ocr:
+  language: "en"
+  confidence_threshold: 0.5
+  max_image_size: 2048
+
+mrz:
+  strict_checksum: true
+  allow_ocr_correction: false
+
+template:
+  alignment_tolerance: 0.05    # normalized deviation threshold
+  aspect_ratio_tolerance: 0.03
+  field_position_tolerance: 15  # pixels after normalization
+
+forensics:
+  copy_move:
+    min_matches: 10
+    distance_ratio: 0.75
+    min_cluster_size: 5
+    ransac_threshold: 5.0
+  manipulation_cnn:
+    confidence_threshold: 0.5
+    input_size: 224
+  geometric:
+    deviation_threshold: 0.1
+
+face:
+  match_threshold: 0.4         # ArcFace cosine similarity
+  uncertain_threshold: 0.3     # below match, above this = UNCERTAIN
+  min_face_size: 50            # pixels
+  max_pose_angle: 30           # degrees
+  min_quality_score: 0.3
+
+pad:
+  confidence_threshold: 0.5
+  tested_attacks:
+    - "printed_photo"
+    - "screen_replay"
+    - "video_replay"
+
+fusion:
+  weights:
+    mrz_viz: 1.0
+    document_consistency: 0.9
+    structural_conformity: 0.7
+    manipulation_evidence: 0.8
+    identity_consistency: 0.8
+  concern_thresholds:
+    review_required: 0.4
+    high_concern: 0.7
+  reliability_degradation:
+    poor_quality_factor: 0.5
+    uncertain_source_factor: 0.7
+
+audit:
+  hash_algorithm: "sha256"
+  log_raw_biometrics: false
+
+storage:
+  max_file_size_mb: 20
+  allowed_extensions:
+    - ".jpg"
+    - ".jpeg"
+    - ".png"
+    - ".bmp"
+    - ".tiff"
+  upload_dir: "./uploads"
