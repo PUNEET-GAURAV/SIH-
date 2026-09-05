@@ -34,7 +34,7 @@ class Settings(BaseSettings):
     mock_mode: bool = False
 
     # Database
-    database_url: str = "sqlite:///./docshield.db"
+    database_url: str = "sqlite:////tmp/docshield.db" if os.environ.get("VERCEL") else "sqlite:///./docshield.db"
 
     # Auth
     jwt_secret_key: str = "change-me-jwt-secret-key"
@@ -42,11 +42,11 @@ class Settings(BaseSettings):
     jwt_expiration_minutes: int = 480
 
     # File Storage
-    upload_dir: str = "./uploads"
+    upload_dir: str = "/tmp/uploads" if os.environ.get("VERCEL") else "./uploads"
     max_file_size_mb: int = 20
 
     # Model Paths
-    model_dir: str = "./models"
+    model_dir: str = "/tmp/models" if os.environ.get("VERCEL") else "./models"
     ocr_model_path: str = ""
     face_model_path: str = ""
     forensic_model_path: str = ""
