@@ -21,21 +21,8 @@ scikit-image==0.24.0
 numpy==1.26.4
 Pillow==11.1.0
 
-# === AI Models (install for real inference; system degrades gracefully without these) ===
-# PaddleOCR — OCR engine
-paddlepaddle==2.6.2
-paddleocr==2.9.1
-
-# InsightFace — face detection + ArcFace embeddings
-insightface==0.7.3
-onnxruntime==1.20.1
-
-# PyTorch — forensic CNN (EfficientNet-B0)
-# Install appropriate version for your platform:
-# CPU: torch==2.5.1 torchvision==0.20.1
-# GPU: see https://pytorch.org/get-started/locally/
-torch==2.5.1
-torchvision==0.20.1
+# === AI Models ===
+# (Moved to requirements-ml.txt to avoid Vercel 250MB limit)
 
 # === Testing ===
 pytest==8.3.4
